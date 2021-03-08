@@ -16,6 +16,9 @@ public class TestMyLink {
         myLink.printLink();
         printListReversely(myLink.getHead());
         isLoop(myLink.getHead());
+        MyLink<Integer> myLink2=new MyLink<>();
+        buildMyLink2(myLink2);
+        mergeLink(myLink,myLink2).printLink();
 
     }
 
@@ -28,6 +31,14 @@ public class TestMyLink {
         myLink.addNode(1);
         myLink.addNode(1);
         myLink.addNode(6);
+        myLink.addNode(15);
+    }
+    public static void buildMyLink2(MyLink<Integer> myLink){
+        myLink.addNode(8);
+        myLink.addNode(9);
+        myLink.addNode(10);
+        myLink.addNode(3);
+        myLink.addNode(16);
     }
 
     public static void reverseLink(MyLink<Integer> myLink){//链表反转
@@ -37,12 +48,12 @@ public class TestMyLink {
         Node<Integer> sucNode;//后继节点
         Node<Integer> current=myLink.getHead();
         while(current!=null){
-            myLink.setHead(current);
             sucNode=current.next;
             current.next=preNode;
             preNode=current;
             current=sucNode;
         }
+        myLink.setHead(preNode);
     }
 
     /**
@@ -164,5 +175,51 @@ public class TestMyLink {
             }
         }
         return !(fast == null || fast.next == null);
+    }
+
+    /**
+     * 合并有序链表
+     *
+     */
+    public static MyLink<Integer> mergeLink(MyLink<Integer> myLink1,MyLink<Integer> myLink2){
+        if(myLink1==null||myLink2==null){
+            System.out.println("非法传入");
+            return null;
+        }
+        orderList(myLink2);
+        myLink2.printLink();
+        Node<Integer> currentLink1Node=myLink1.getHead();
+        Node<Integer> currentLink2Node=myLink2.getHead();
+        if(currentLink2Node==null){
+            System.out.println("非法传入");
+            return null;
+        }
+        boolean hasMerge=false;
+        while(currentLink1Node!=null){
+            Node<Integer> temp=currentLink1Node.next;
+            Node<Integer> preNode=null;
+            while(currentLink2Node!=null){
+                if(currentLink1Node.data<currentLink2Node.data){
+                    if(preNode==null){
+                        myLink2.setHead(currentLink1Node);
+                    }else{
+                        preNode.next=currentLink1Node;
+                    }
+                    currentLink1Node.next=currentLink2Node;
+                    hasMerge=true;
+                    preNode=null;
+                    currentLink2Node=myLink2.getHead();
+                    myLink2.printLink();
+                    break;
+                }
+                preNode=currentLink2Node;
+                currentLink2Node=currentLink2Node.next;
+            }
+            if(!hasMerge){
+                preNode.next=currentLink1Node;
+            }
+            currentLink1Node=temp;
+        }
+        return myLink2;
     }
 }
