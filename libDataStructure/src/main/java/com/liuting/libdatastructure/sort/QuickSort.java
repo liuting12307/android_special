@@ -1,12 +1,25 @@
 package com.liuting.libdatastructure.sort;
 
+import java.util.Random;
+
 //快速排序
 public class QuickSort {
     public static void main(String[] args) {
-        int[] a = {2, 4, 1, 9, 3, 6, 14,18,26,45,12, 3, 8};
+        //模拟高考,100万考生，高考总分750
+        int[] a=new int[1000*10000];
+        Random random=new Random();
+        for(int i=0;i<a.length;i++){
+            int value=random.nextInt(750);
+            a[i]=value;
+        }
+        System.out.println("-------排序前---------");
+        long start=System.currentTimeMillis();
         printArray(a);
         quickSort(a,0,a.length-1);
+        System.out.println("-------排序后---------");
         printArray(a);
+        long end=System.currentTimeMillis();
+        System.out.println("排序时间="+(end-start));
     }
 
     public static void quickSort(int[] arr,int left,int right){
