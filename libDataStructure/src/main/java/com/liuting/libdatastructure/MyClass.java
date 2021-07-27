@@ -5,6 +5,7 @@ import com.liuting.libdatastructure.mylinklist.MyLink;
 public class MyClass {
     public static void main(String[] args){
         testMyLink();
+
     }
 
     public static void testMyLink(){

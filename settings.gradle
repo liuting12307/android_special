@@ -1,3 +1,4 @@
 include ':libDataStructure'
 include ':app'
 rootProject.name = "AndroidSpecial"
+include ':uidemo'
