@@ -10,6 +10,7 @@ public class TestStack {
         arrayStack.push("7");
         arrayStack.push("7");
         arrayStack.printStack();
+        System.out.println("出栈:"+5/2);
         System.out.println("出栈:"+arrayStack.pop());
         System.out.println("出栈:"+arrayStack.pop());
         System.out.println("出栈:"+arrayStack.pop());

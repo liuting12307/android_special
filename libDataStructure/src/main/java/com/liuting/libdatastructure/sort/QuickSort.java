@@ -6,7 +6,7 @@ import java.util.Random;
 public class QuickSort {
     public static void main(String[] args) {
         //模拟高考,100万考生，高考总分750
-        int[] a=new int[1000*10000];
+        int[] a=new int[10*10];
         Random random=new Random();
         for(int i=0;i<a.length;i++){
             int value=random.nextInt(750);

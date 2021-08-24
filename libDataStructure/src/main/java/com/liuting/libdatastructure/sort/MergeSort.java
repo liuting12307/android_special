@@ -49,6 +49,7 @@ public class MergeSort {
                 temp[t++]=arr[j++];
             }
         }
+
         //将左边剩余元素填充进temp中
         while(i<=mid){
             temp[t++]=arr[i++];
