@@ -2,8 +2,8 @@ package com.liuting.libdatastructure.sort;
 
 import java.util.Random;
 
-//快速排序
-public class QuickSort {
+//堆排序  演示 从小到大排序，构建最大堆
+public class HeapSort {
     public static void main(String[] args) {
         //模拟高考,100万考生，高考总分750
         int[] a = new int[20];
@@ -15,62 +15,42 @@ public class QuickSort {
         System.out.println("-------排序前---------");
         long start = System.currentTimeMillis();
         printArray(a);
-        quickSort(a, 0, a.length - 1);
+        heapSort(a);
         System.out.println("-------排序后---------");
         printArray(a);
         long end = System.currentTimeMillis();
         System.out.println("排序时间=" + (end - start));
     }
 
-    public static void quickSort(int[] arr, int left, int right) {
-
-        if (left >= right)
-            return;
-        int pivot = partition(arr, left, right);
-        quickSort(arr, left , pivot-1);
-        quickSort(arr, pivot+1,right );
-
-
+    public static void heapSort(int[] arr){
+        //把无序数组构建最大堆
+        for(int i= (arr.length-2)/2;i>=0;i--){
+            downAdjust(i,arr.length,arr);
+        }
+        for(int i=arr.length-1;i>=1;i--){
+            swap(arr,0,i);
+            //下沉调整最大堆
+            downAdjust(0,i,arr);
+        }
     }
 
-    public static int partition(int[] arr, int left, int right) {
-
-        //获取枢纽值，并将其放在当前待处理序列末尾
-        dealPivot(arr, left, right);
-        //枢纽值被放在序列头部
-        int mark = left;
-        for (int i = left + 1; i <= right; i++) {
-            if (arr[i] < arr[left]) {
-                mark++;
-                swap(arr, i, mark);
+    public static void downAdjust(int parentIndex,int length,int[]arr){
+        int temp=arr[parentIndex];
+        int childIndex=2*parentIndex+1;
+        while(childIndex<length){
+            //如果有右孩子，且右孩子的值大于左孩子的值，则定位到右孩子
+            if(childIndex+1<length&&arr[childIndex+1]>arr[childIndex]){
+                childIndex++;
             }
+            if(temp>=arr[childIndex]){
+                break;
+            }
+            //不需要真正交换，单向赋值就可以
+            arr[parentIndex]=arr[childIndex];
+            parentIndex=childIndex;
+            childIndex=2*childIndex+1;
         }
-        swap(arr, left, mark);
-        return mark;
-
-
-    }
-
-
-    /**
-     * 处理枢纽值
-     *
-     * @param arr
-     * @param left
-     * @param right
-     */
-    public static void dealPivot(int[] arr, int left, int right) {
-        int mid = (left + right) / 2;
-        if (arr[left] > arr[mid]) {
-            swap(arr, left, mid);
-        }
-        if (arr[left] > arr[right]) {
-            swap(arr, left, right);
-        }
-        if (arr[right] < arr[mid]) {
-            swap(arr, right, mid);
-        }
-        swap(arr, left, mid);
+        arr[parentIndex]=temp;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.liuting.libdatastructure.tree;
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class TraversalTree {
     public static void main(String[] args) {
@@ -8,15 +9,28 @@ public class TraversalTree {
         makeTree(rootNode);
         System.out.println("前序遍历");
         preOrder(rootNode);
+        System.out.println("通过栈前序遍历");
+        preOrderWithStack(rootNode);
         System.out.println("中序遍历");
         inOrder(rootNode);
+        System.out.println("通过栈中序遍历");
+        inOrderWithStack(rootNode);
         System.out.println("后序遍历");
         postOrder(rootNode);
+        System.out.println("通过栈后序遍历");
+        postOrderWithStack(rootNode);
 
         System.out.println("广度优先，按层遍历");
         bfs(rootNode);
     }
     public static void makeTree(TreeNode<String> root){
+        /*
+        *                   A
+        *                  / \
+        *                 B   C
+        *                / \ / \
+        *               D  E F  G
+        * */
         TreeNode<String> bNode=new TreeNode<>("B");
         TreeNode<String> cNode=new TreeNode<>("C");
         TreeNode<String> dNode=new TreeNode<>("D");
@@ -31,13 +45,32 @@ public class TraversalTree {
         cNode.right=gNode;
 
     }
-    //前序遍历
+    //前序遍历 递归
     public static void preOrder(TreeNode<String> root){
         if(root==null)
             return;
         System.out.println(root);
         preOrder(root.left);
         preOrder(root.right);
+    }
+
+    //前序遍历 栈
+    public static void preOrderWithStack(TreeNode<String> root){
+        Stack<TreeNode<String>> stack=new Stack<>();
+        TreeNode<String> temp=root;
+        stack.push(temp);
+        if(temp!=null){
+            while(!stack.isEmpty()){
+                temp=stack.pop();
+                System.out.println(temp);
+                if(temp.right!=null){
+                    stack.push(temp.right);
+                }
+                if(temp.left!=null){
+                    stack.push(temp.left);
+                }
+            }
+        }
     }
 
     //中序遍历
@@ -50,6 +83,22 @@ public class TraversalTree {
         inOrder(root.right);
     }
 
+    //中序遍历 栈
+    public static void inOrderWithStack(TreeNode<String> root){
+        Stack<TreeNode<String>> stack=new Stack<>();
+        TreeNode<String> temp=root;
+        while(!stack.isEmpty()||temp!=null){
+            if(temp!=null){
+                stack.push(temp);
+                temp=temp.left;
+            }else{
+                temp=stack.pop();
+                System.out.println(temp);
+                temp=temp.right;
+            }
+        }
+    }
+
     //后序遍历
     public static void postOrder(TreeNode<String> root){
         if(root==null)
@@ -57,6 +106,30 @@ public class TraversalTree {
         postOrder(root.left);
         postOrder(root.right);
         System.out.println(root);
+    }
+    //后序遍历
+    public static void postOrderWithStack(TreeNode<String> root){
+        Stack<TreeNode<String>> stack = new Stack<TreeNode<String>>();
+        TreeNode<String> p = root,    prev = root;
+        while(p!=null || !stack.isEmpty()){
+            while(p!=null){
+                stack.push(p);
+                p = p.left;
+            }
+            if(!stack.isEmpty()){
+                TreeNode<String> temp = stack.peek().right;
+                //只是拿出来栈顶这个值，并没有进行删除
+                if(temp == null||temp == prev){
+                    //节点没有右子节点或者到达根节点【考虑到最后一种情况】
+                    p = stack.pop();
+                    System.out.println(p);
+                    prev = p;
+                    p = null;
+                } else{
+                    p = temp;
+                }
+            }
+        }
     }
 
     /**
@@ -85,4 +158,5 @@ public class TraversalTree {
         }
 
     }
+
 }
