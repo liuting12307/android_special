@@ -19,6 +19,24 @@ public class TestMyLink {
         MyLink<Integer> myLink2=new MyLink<>();
         buildMyLink2(myLink2);
         mergeLink(myLink,myLink2).printLink();
+        System.out.println("---------构建循环链表-----------");
+        Node<Integer> loop1=new Node<>(5);
+        Node<Integer> loop2=new Node<>(3);
+        Node<Integer> loop3=new Node<>(7);
+        Node<Integer> loop4=new Node<>(2);
+        Node<Integer> loop5=new Node<>(6);
+        Node<Integer> loop6=new Node<>(8);
+        Node<Integer> loop7=new Node<>(1);
+        loop1.next=loop2;
+        loop2.next=loop3;
+        loop3.next=loop4;
+        loop4.next=loop5;
+        loop5.next=loop6;
+        loop6.next=loop7;
+        loop7.next=loop4;
+        System.out.println("环的长度为:"+loopLength(loop1));
+        System.out.println("环的入口值为:"+loopMeetValue(loop1));
+
 
     }
 
@@ -174,7 +192,78 @@ public class TestMyLink {
                 return true;
             }
         }
-        return !(fast == null || fast.next == null);
+        return false;
+    }
+
+    /**
+     * 如果链表有环，求环的长度
+     *
+     * @param head
+     * @return
+     */
+    public static int loopLength(Node<Integer> head) {
+        Node<Integer> fast=head;
+        Node<Integer> slow=head;
+        if (fast == null) {
+            return 0;
+        }
+        int meetTimes=0;
+        int count=0;
+        while(fast!=null&&fast.next!=null){
+            count++;
+            fast=fast.next.next;
+            slow=slow.next;
+            if(fast==slow){
+                System.out.println("该链表有环");
+                meetTimes++;
+                if(meetTimes==1){
+                    count=0;
+                }
+                if(meetTimes==2){
+                    return count;
+                }
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * 如果链表有环，求入环节点值
+     *
+     * @param head
+     * @return
+     */
+    public static int loopMeetValue(Node<Integer> head) {
+
+        Node<Integer> fast=head;
+        Node<Integer> slow=head;
+        if (fast == null) {
+            return 0;
+        }
+        boolean hasMeet=false;
+        while(fast!=null&&fast.next!=null){
+            if(hasMeet){
+                fast=fast.next;
+            }else{
+                fast=fast.next.next;
+            }
+            slow=slow.next;
+            if(hasMeet){
+                if(fast==slow){
+                    return fast.data;
+                }
+            }else{
+                if(fast==slow){
+                    System.out.println("该链表有环");
+                    //首次相遇时将快指针移到起点值
+                    fast=head;
+                    hasMeet=true;
+                }
+            }
+
+        }
+        return -1;
     }
 
     /**
