@@ -1,7 +1,5 @@
 package com.liuting.libdatastructure.xiaohuihui;
 
-import java.util.Stack;
-
 /**
  * 作者:admin on 2021/9/8 21:46
  * 邮箱:474211389@qq.com
